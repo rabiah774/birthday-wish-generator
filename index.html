@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Gift</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <section id="form-section" class="section ">
+    <form id="form" class="page-card">
+      <h2>Birthday wish Generator</h2>
+      <label for="name">Enter Birthday person name:</label>
+      <input type="text" id="name" name="name" required>
+      <input type="number" id="age" name="age" placeholder="Enter Age" required>
+      <label for="name">From:</label>
+      <input type="text" id="from" name="from" required>
+      <button type="submit" id="start">Submit</button>
+
+      <div id="linkBox" style="display: none;">
+        <p id="shareText"></p>
+        <a href=""><input type="text" id="shareLink" readonly></a>
+        <button type="button" id="copyBtn">Copy Link</button>
+      </div>
+    </form>
+  </section>
+  <section id="intro-section" class="section active ">
+    <img
+      src="https://img.freepik.com/free-vector/sweet-birthday-cake-with-candles_18591-82310.jpg?semt=ais_hybrid&w=740&q=80"
+      alt="Birthday Cake" width="170">
+    <h1> Today is the day, <span id="introName"></span>! </h1>
+    <h1>Celebrate Your Special <span id="introAge"></span>th Birthday!</h1>
+    <h3>Get ready for a delightful surprise from <span id="introFrom"></span>.</h3>
+    <button type="button" id="startCelebrationButton">Start Celebration</button>
+  </section>
+
+  <section id="gift-section" class="section">
+    <div class="gift-container">
+
+      <div class="gift-box" id="giftBox">🎁</div>
+      <p class="gift-text">Click the gift to open it!</p>
+
+      <div id="confetti-container"></div>
+    </div>
+  </section>
+
+
+  <section id="final-section" class="section ">
+
+    <!-- Floating sparkle decorations -->
+    <div class="final-sparkles">
+      <span class="sparkle sparkle-1">✨</span>
+      <span class="sparkle sparkle-2">🎂</span>
+      <span class="sparkle sparkle-3">⭐</span>
+      <span class="sparkle sparkle-4">🎈</span>
+      <span class="sparkle sparkle-5">💖</span>
+      <span class="sparkle sparkle-6">🎀</span>
+    </div>
+
+    <!-- Birthday banner -->
+    <div class="birthday-banner">
+      <span class="banner-emoji">🎉</span>
+      <h2 class="banner-title">Happy Birthday!</h2>
+      <span class="banner-emoji">🎉</span>
+    </div>
+
+    <!-- Envelope / Letter Card -->
+    <div id="letterContainer" class="letter hidden">
+      <div class="letter-flap"></div>
+      <div class="letter-inner">
+        <div class="letter-header">
+          <span class="to">💌 To: <span id="recipientName"></span></span>
+          <span class="from">🖊️ From: <span id="senderName"></span></span>
+        </div>
+        <div class="letter-divider"></div>
+        <div class="letter-content">
+          <p class="letter-greeting">Dear <span id="letterRecipient"></span>,</p>
+          <p>Happy Birthday! 🎂 I hope you have an amazing day filled with joy, laughter, and everything you wish for.</p>
+          <p>You're a wonderful person and I'm so grateful to have you in my life. May this year bring you success,
+            happiness, and many beautiful moments. 🌟</p>
+          <p>Enjoy your special day to the fullest! 🥳</p>
+          <div class="letter-sign-off">
+            <p class="signature">Warm wishes,</p>
+            <p class="signature signature-name"><span id="letterSender"></span></p>
+          </div>
+        </div>
+        <div class="letter-seal">💝</div>
+      </div>
+    </div>
+
+    <button type="button" id="openLetter" style="display: none;">
+      <span class="btn-icon">💌</span> Open Letter
+    </button>
+  </section>
+</body>
+
+</html>

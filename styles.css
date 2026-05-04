@@ -1,0 +1,804 @@
+.section {
+    display: none;
+}
+
+.section.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+body {
+    max-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #dc6bc9, #9e9ed8);
+}
+
+.page-card {
+    border: 1px solid #322e2e;
+    border-radius: 8px;
+    padding: 50px 40px;
+    width: 90%;
+    max-width: 450px;
+    background-color: lightgrey;
+    color: #dc6bc9;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 0px 10px whitesmoke;
+
+}
+
+.page-card h2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    color: #464345;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #2c2b2b;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border: 2px solid #464345;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid palevioletred;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+button:hover {
+    box-shadow: 0 0 10px palevioletred;
+    color: rgb(21, 21, 21);
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: pink;
+}
+
+#intro-section {
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 700;
+    gap: 18px;
+    text-align: center;
+}
+
+#intro-section h1 {
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+#intro-section button {
+    font-size: 18px;
+    padding: 15px;
+    margin-top: 20px;
+
+}
+
+#intro-section h3 {
+    font-size: 18px;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000000;
+}
+
+#intro-section h1:hover,
+#intro-section h3:hover {
+    text-shadow: 3px 3px 6px #000000;
+    transform: translateX(0.3s);
+}
+
+#intro-section img {
+    border-radius: 50%;
+    box-shadow: 0 0 15px #000000;
+    padding: 10px;
+    animation: zoomInOut 5s infinite;
+}
+
+@keyframes zoomInOut {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.gift-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.gift-box {
+    font-size: 100px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gift-box:hover {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* ═══════════════════════════════════════════
+   ✨  FABULOUS CONFETTI SYSTEM  ✨
+   ═══════════════════════════════════════════ */
+
+#confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+    perspective: 800px;
+}
+
+/* Base confetti piece */
+.confetti {
+    position: absolute;
+    top: -20px;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: confettiFall var(--fall-duration, 3s) var(--fall-delay, 0s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    filter: brightness(1.15) saturate(1.3);
+}
+
+/* ── Shape Variants ── */
+
+/* Rectangle (default) */
+.confetti--rect {
+    width: var(--size, 12px);
+    height: calc(var(--size, 12px) * 0.45);
+    border-radius: 2px;
+}
+
+/* Circle */
+.confetti--circle {
+    width: var(--size, 10px);
+    height: var(--size, 10px);
+    border-radius: 50%;
+}
+
+/* Star */
+.confetti--star {
+    width: var(--size, 14px);
+    height: var(--size, 14px);
+    background: transparent !important;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Ribbon / streamer */
+.confetti--ribbon {
+    width: calc(var(--size, 10px) * 0.35);
+    height: calc(var(--size, 10px) * 2.5);
+    border-radius: 3px;
+}
+
+/* Diamond */
+.confetti--diamond {
+    width: var(--size, 10px);
+    height: var(--size, 10px);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* ── Shimmer / Sparkle ── */
+.confetti::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.6) 0%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.3) 100%);
+    border-radius: inherit;
+    animation: shimmer 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.9;
+    }
+}
+
+/* ── Main Fall Animation ── */
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-20px) translateX(0) rotateX(0deg) rotateZ(0deg) scale(0.4);
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+        transform: translateY(5vh) translateX(calc(var(--sway, 30px) * -0.5)) rotateX(90deg) rotateZ(45deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(22vh) translateX(var(--sway, 30px)) rotateX(200deg) rotateZ(130deg) scale(1);
+    }
+
+    50% {
+        transform: translateY(48vh) translateX(calc(var(--sway, 30px) * -0.7)) rotateX(380deg) rotateZ(260deg) scale(0.95);
+        opacity: 0.9;
+    }
+
+    75% {
+        transform: translateY(72vh) translateX(calc(var(--sway, 30px) * 0.4)) rotateX(520deg) rotateZ(400deg) scale(0.85);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(105vh) translateX(var(--sway, 30px)) rotateX(720deg) rotateZ(540deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* ── Size Variants (set via JS) ── */
+.confetti--sm {
+    --size: 8px;
+    --fall-duration: 3.5s;
+}
+
+.confetti--md {
+    --size: 13px;
+    --fall-duration: 2.8s;
+}
+
+.confetti--lg {
+    --size: 18px;
+    --fall-duration: 2.2s;
+}
+
+.confetti--xl {
+    --size: 24px;
+    --fall-duration: 2s;
+}
+
+
+   
+
+/* ═══════════════════════════════════════════
+   🎂  FINAL SECTION — BIRTHDAY REVEAL
+   ═══════════════════════════════════════════ */
+
+#final-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 40px 16px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 30% 20%, #f3e5f5 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, #e8eaf6 0%, transparent 50%),
+        radial-gradient(circle at top, #dc6bc9, #9e9ed8);
+    min-height: 100vh;
+}
+
+/* ── Floating Sparkle Decorations ── */
+.final-sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sparkle {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.7;
+    animation: floatSparkle 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+.sparkle-1 {
+    top: 8%;
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 5.5s;
+}
+
+.sparkle-2 {
+    top: 15%;
+    right: 12%;
+    animation-delay: 1s;
+    animation-duration: 6.5s;
+}
+
+.sparkle-3 {
+    bottom: 20%;
+    left: 8%;
+    animation-delay: 2s;
+    animation-duration: 7s;
+}
+
+.sparkle-4 {
+    bottom: 10%;
+    right: 15%;
+    animation-delay: 0.5s;
+    animation-duration: 5s;
+}
+
+.sparkle-5 {
+    top: 45%;
+    left: 5%;
+    animation-delay: 1.5s;
+    animation-duration: 6s;
+}
+
+.sparkle-6 {
+    top: 50%;
+    right: 6%;
+    animation-delay: 2.5s;
+    animation-duration: 5.8s;
+}
+
+@keyframes floatSparkle {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 0.5;
+    }
+
+    25% {
+        transform: translateY(-18px) rotate(15deg) scale(1.15);
+        opacity: 0.85;
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(-10deg) scale(1.05);
+        opacity: 0.7;
+    }
+
+    75% {
+        transform: translateY(-22px) rotate(8deg) scale(1.2);
+        opacity: 0.9;
+    }
+}
+
+/* ── Birthday Banner ── */
+.birthday-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 1;
+    animation: bannerSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.banner-title {
+    font-size: 36px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, #ffd6ec 40%, #ffc107 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.banner-emoji {
+    font-size: 38px;
+    animation: bannerBounce 2s ease-in-out infinite;
+}
+
+.banner-emoji:last-child {
+    animation-delay: 0.3s;
+}
+
+@keyframes bannerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes bannerBounce {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-8px) rotate(-8deg);
+    }
+
+    75% {
+        transform: translateY(-4px) rotate(8deg);
+    }
+}
+
+/* ── Envelope / Letter Card ── */
+.letter {
+    position: relative;
+    width: 90%;
+    max-width: 520px;
+    z-index: 1;
+    animation: envelopeReveal 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 0.3s;
+}
+
+.letter.hidden {
+    display: none;
+}
+
+.letter-flap {
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(135deg, #e8b4d8 0%, #d1a5e0 50%, #b388c9 100%);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    animation: flapOpen 0.6s ease-out 0.8s both;
+    transform-origin: top center;
+}
+
+@keyframes flapOpen {
+    from {
+        transform: rotateX(0deg);
+    }
+
+    to {
+        transform: rotateX(180deg);
+        opacity: 0.3;
+    }
+}
+
+.letter-inner {
+    background: linear-gradient(145deg, #fffdf7 0%, #fef9f0 30%, #fff5f5 100%);
+    border-radius: 0 0 16px 16px;
+    padding: 32px 28px;
+    box-shadow:
+        0 8px 32px rgba(156, 100, 200, 0.25),
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(209, 165, 224, 0.4);
+    border-top: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative paper texture */
+.letter-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 27px,
+            rgba(200, 170, 210, 0.08) 27px,
+            rgba(200, 170, 210, 0.08) 28px);
+    pointer-events: none;
+}
+
+/* Red margin line like real letter paper */
+.letter-inner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 38px;
+    bottom: 0;
+    width: 1.5px;
+    background: rgba(220, 80, 80, 0.12);
+    pointer-events: none;
+}
+
+@keyframes envelopeReveal {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Letter Header ── */
+.letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.letter-header .to,
+.letter-header .from {
+    font-size: 15px;
+    font-weight: 700;
+    color: #7b4a8e;
+    background: linear-gradient(135deg, rgba(220, 107, 201, 0.1), rgba(158, 158, 216, 0.1));
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(209, 165, 224, 0.3);
+}
+
+.letter-header .to span,
+.letter-header .from span {
+    color: #c054a8;
+    font-weight: 800;
+}
+
+/* ── Divider ── */
+.letter-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d1a5e0, #dc6bc9, #d1a5e0, transparent);
+    margin: 16px 0;
+    border-radius: 2px;
+}
+
+/* ── Letter Content ── */
+.letter-content {
+    position: relative;
+    z-index: 1;
+}
+
+.letter-content p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #4a3a52;
+    margin: 0 0 14px 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.letter-greeting {
+    font-size: 18px !important;
+    font-weight: 700;
+    color: #6b3a7d !important;
+    margin-bottom: 18px !important;
+}
+
+.letter-greeting span {
+    color: #c054a8;
+    font-style: italic;
+}
+
+/* ── Signature ── */
+.letter-sign-off {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(209, 165, 224, 0.4);
+}
+
+.signature {
+    font-style: italic;
+    color: #8b6a9e !important;
+    font-size: 15px;
+    margin: 4px 0 !important;
+}
+
+.signature-name {
+    font-size: 20px !important;
+    font-weight: 800;
+    font-style: normal;
+    color: #c054a8 !important;
+    font-family: 'Brush Script MT', 'Segoe Script', cursive;
+    letter-spacing: 1px;
+}
+
+/* ── Wax Seal ── */
+.letter-seal {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-size: 36px;
+    animation: sealPulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 2px 6px rgba(200, 50, 100, 0.3));
+}
+
+@keyframes sealPulse {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* ── Open Letter Button ── */
+#openLetter {
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #dc6bc9 0%, #9e7be0 50%, #748ffc 100%);
+    cursor: pointer;
+    box-shadow:
+        0 6px 24px rgba(156, 100, 200, 0.4),
+        0 0 0 0 rgba(220, 107, 201, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: pulseGlow 2.5s ease-in-out infinite;
+    letter-spacing: 0.5px;
+}
+
+#openLetter:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow:
+        0 10px 32px rgba(156, 100, 200, 0.5),
+        0 0 20px rgba(220, 107, 201, 0.3);
+    background: linear-gradient(135deg, #e07dd6 0%, #ab8be8 50%, #839aff 100%);
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 6px 24px rgba(156, 100, 200, 0.4),
+            0 0 0 0 rgba(220, 107, 201, 0.4);
+    }
+
+    50% {
+        box-shadow:
+            0 6px 24px rgba(156, 100, 200, 0.4),
+            0 0 0 12px rgba(220, 107, 201, 0);
+    }
+}
+
+.btn-icon {
+    margin-right: 6px;
+    font-size: 18px;
+}
+
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+    .banner-title {
+        font-size: 26px;
+    }
+
+    .banner-emoji {
+        font-size: 28px;
+    }
+
+    .letter-inner {
+        padding: 24px 18px;
+    }
+
+    .letter-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sparkle {
+        font-size: 20px;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   📋  COPY LINK / SHARE SECTION
+   ═══════════════════════════════════════════ */
+
+#linkBox {
+    margin-top: 18px;
+    padding: 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8e8f4 0%, #ede4f7 100%);
+    border: 1px solid #dcc8e6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#shareText {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6b3a7d;
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Link input wrapper — pill shape */
+#shareLink {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #d1a5e0;
+    border-radius: 25px;
+    font-size: 13px;
+    color: #444;
+    background: #fff;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: text;
+}
+
+#shareLink:focus {
+    border-color: #b56ccf;
+    box-shadow: 0 0 0 3px rgba(181, 108, 207, 0.25);
+}
+
+/* Copy button */
+#copyBtn {
+    align-self: center;
+    margin-top: 4px;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #dc6bc9 0%, #9e7be0 100%);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 4px 14px rgba(156, 100, 200, 0.35);
+    position: relative;
+
+
+
+}
