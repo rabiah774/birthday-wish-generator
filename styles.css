@@ -153,7 +153,12 @@ textarea:focus {
 .photo-preview .preview-label .preview-icon {
     margin-right: 4px;
 }
-
+ #start {
+    width: 100%;
+ }
+ #copyBtn {
+    width: 100%;
+ }
 button {
     margin-top: 10px;
     padding: 12px 12px;
