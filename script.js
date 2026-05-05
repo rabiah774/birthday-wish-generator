@@ -76,13 +76,18 @@ photoInput.addEventListener("change", function () {
   const file = this.files[0];
   if (file && file.type.startsWith("image/")) {
     const reader = new FileReader();
-    reader.onload = function (e) {
-      uploadedImageDataURL = e.target.result;
-      photoPreview.innerHTML =
-        `<img src="${uploadedImageDataURL}" alt="Preview">` +
-        `<span class="preview-label"><span class="preview-icon">✅</span>Image selected — ${file.name}</span>`;
-      photoPreview.classList.add("has-image");
-    };
+   reader.onload = function (e) {
+  uploadedImageDataURL = e.target.result;
+
+  // ✅ SAVE IMAGE TO localStorage
+  localStorage.setItem("birthdayImage", uploadedImageDataURL);
+
+  photoPreview.innerHTML =
+    `<img src="${uploadedImageDataURL}" alt="Preview">` +
+    `<span class="preview-label"><span class="preview-icon">✅</span>Image selected — ${file.name}</span>`;
+
+  photoPreview.classList.add("has-image");
+};
     reader.readAsDataURL(file);
   } else {
     // Reset if no valid image
@@ -139,10 +144,13 @@ giftBox.addEventListener("click", () => {
     // ── Show uploaded photo in letter ──
     const letterPhotoFrame = document.getElementById("letterPhotoFrame");
     const letterPhoto = document.getElementById("letterPhoto");
-    if (uploadedImageDataURL && letterPhotoFrame && letterPhoto) {
-      letterPhoto.src = uploadedImageDataURL;
-      letterPhotoFrame.style.display = "block";
-    }
+    // ✅ LOAD IMAGE FROM localStorage
+const savedImage = localStorage.getItem("birthdayImage");
+
+if (savedImage && letterPhotoFrame && letterPhoto) {
+  letterPhoto.src = savedImage;
+  letterPhotoFrame.style.display = "block";
+}
 
     // ── Show custom message in letter ──
     const letterMessage = document.getElementById("letterMessage");
