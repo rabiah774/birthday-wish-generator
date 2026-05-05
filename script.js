@@ -1,12 +1,12 @@
 function showSection(sectionId) {
-    const sections = document.querySelectorAll("section");
-    sections.forEach(section => {
-        section.classList.remove("active");
+  const sections = document.querySelectorAll("section");
+  sections.forEach(section => {
+    section.classList.remove("active");
 
-        if(section.id === sectionId) {
-            section.classList.add("active");
+    if (section.id === sectionId) {
+      section.classList.add("active");
     }
-    });
+  });
 }
 function createConfetti() {
   const container = document.getElementById("confetti-container");
@@ -19,13 +19,13 @@ function createConfetti() {
     "#e8daef"
   ];
   const shapes = ["rect", "circle", "star", "ribbon", "diamond"];
-  const sizes  = ["sm", "md", "md", "lg", "xl"]; // weighted toward medium
+  const sizes = ["sm", "md", "md", "lg", "xl"]; // weighted toward medium
 
   function spawnBurst(count, baseDelay) {
     for (let i = 0; i < count; i++) {
       const el = document.createElement("div");
       const shape = shapes[Math.floor(Math.random() * shapes.length)];
-      const size  = sizes[Math.floor(Math.random() * sizes.length)];
+      const size = sizes[Math.floor(Math.random() * sizes.length)];
 
       el.classList.add("confetti", `confetti--${shape}`, `confetti--${size}`);
 
@@ -66,10 +66,37 @@ function createConfetti() {
   }, 6000);
 }
 
+// ── Image upload preview ──
+let uploadedImageDataURL = null;
+
+const photoInput = document.getElementById("photo");
+const photoPreview = document.getElementById("photoPreview");
+
+photoInput.addEventListener("change", function () {
+  const file = this.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      uploadedImageDataURL = e.target.result;
+      photoPreview.innerHTML =
+        `<img src="${uploadedImageDataURL}" alt="Preview">` +
+        `<span class="preview-label"><span class="preview-icon">✅</span>Image selected — ${file.name}</span>`;
+      photoPreview.classList.add("has-image");
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // Reset if no valid image
+    photoPreview.innerHTML = "";
+    photoPreview.classList.remove("has-image");
+    uploadedImageDataURL = null;
+  }
+});
+
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const age = Number(params.get("age"));
 const from = params.get("from");
+const urlMessage = params.get("message");
 
 
 // If parameters are present, show intro section
@@ -83,10 +110,10 @@ if (name && age && from) {
 }
 
 const celebrationButton = document.getElementById("startCelebrationButton");
-celebrationButton.addEventListener("click", function(e) {
-    e.preventDefault();
-    
-    showSection("gift-section");
+celebrationButton.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  showSection("gift-section");
 });
 
 const giftBox = document.getElementById("giftBox");
@@ -108,6 +135,23 @@ giftBox.addEventListener("click", () => {
     if (senderName) senderName.textContent = from || "Your Friend";
     if (letterRecipient) letterRecipient.textContent = name || "Friend";
     if (letterSender) letterSender.textContent = from || "Your Friend";
+
+    // ── Show uploaded photo in letter ──
+    const letterPhotoFrame = document.getElementById("letterPhotoFrame");
+    const letterPhoto = document.getElementById("letterPhoto");
+    if (uploadedImageDataURL && letterPhotoFrame && letterPhoto) {
+      letterPhoto.src = uploadedImageDataURL;
+      letterPhotoFrame.style.display = "block";
+    }
+
+    // ── Show custom message in letter ──
+    const letterMessage = document.getElementById("letterMessage");
+    const letterDefaultMsg1 = document.getElementById("letterDefaultMsg1");
+    const customMsg = urlMessage || (window._customMessage);
+    if (customMsg && customMsg.trim() !== "") {
+      if (letterMessage) letterMessage.textContent = customMsg;
+      if (letterDefaultMsg1) letterDefaultMsg1.style.display = "none";
+    }
 
     // Show the "Open Letter" button
     const openLetterBtn = document.getElementById("openLetter");
@@ -143,23 +187,31 @@ form.addEventListener("submit", function (e) {
   const username = document.getElementById("name").value.trim();
   const age = Number(document.getElementById("age").value);
   const from = document.getElementById("from").value.trim();
+  const customMessage = document.getElementById("message").value.trim();
+
+  // Store custom message globally so the gift flow can use it
+  window._customMessage = customMessage;
 
   if (username === "" || age <= 0) {
     alert("Please enter valid details.");
     return;
   }
 
-   const shareText = document.getElementById("shareText").textContent = `Share this link to wish ${username} a happy ${age}th birthday 🎉`;
+  const shareText = document.getElementById("shareText").textContent = `Share this link to wish ${username} a happy ${age}th birthday 🎉`;
 
   // Generate link
-  const link =
-  `${window.location.origin}${window.location.pathname}` +
-  `?name=${encodeURIComponent(username)}` +
-  `&age=${age}` +
-  `&from=${encodeURIComponent(from)}`;
+  let link =
+    `${window.location.origin}${window.location.pathname}` +
+    `?name=${encodeURIComponent(username)}` +
+    `&age=${age}` +
+    `&from=${encodeURIComponent(from)}`;
 
-shareLink.value = link;
-linkBox.style.display = "block";
+  if (customMessage) {
+    link += `&message=${encodeURIComponent(customMessage)}`;
+  }
+
+  shareLink.value = link;
+  linkBox.style.display = "block";
 });
 
 // ✅ Copy link
